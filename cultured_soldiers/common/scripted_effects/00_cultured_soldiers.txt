@@ -1,0 +1,84 @@
+create_province_cultures_dictionary = { 
+	# Create a list of lists (makeshift dictionary) of cultures (key) and number of pops (value)
+	# Use a switch
+	# Do the same for religion 
+	set_variable = {
+		name = position_i # Used to count the position that the culture key should be added to. +1 for value
+		value = 0
+		days = 2
+	}
+	set_variable = {
+		name = last_iterated_culture
+		value = 0
+		days = 2
+	}
+	set_variable = {
+		name = current_culture_counted
+		value = 0
+		days = 2
+	}
+	ordered_pops_in_province = {
+		limit = { always = yes }
+		order_by = pop_culture
+		hidden_effect = {
+		# As we are counting pops ordered by culture, we can tell how many of each culture pop there is
+		# by having a temp variable that stores the culture of the last pop counted, and comparing it to the current pop
+		# Every iteration, we compare and then update that variable with the current pop's culture
+		# On beginning, we create a new variable whose name is the name of the culture
+		# when the value is the same, add 1 to the value of that culture
+		# when the value is different, create a new culture variable and start adding to that one instead
+
+		# Even positions are keys
+		# Odd positions are values
+		
+			if = {
+				limit = { # If we're still counting the same culture as last time, we add 1 to the total
+					# Or if this is the first pop we're counting
+					OR = {
+						THIS.culture = last_iterated_culture
+						last_iterated_culture = 0
+					}
+				}
+				set_variable = { # Set this pop's culture as a the last iterated culture, ready to check next time
+					name = last_iterated_culture
+					value = THIS.culture
+				}
+				change_variable = { # Count this pop as one more towards the total of pops of this culture
+					name = current_culture_counted
+					add = 1
+				}
+
+
+			}
+
+			else = { # If we're not counting the same culture as last time...
+				# Create a new key value pair, start the value at 1
+				# Presuming that all new additions to the list go at the end of the list
+				add_to_variable_list = { # Store the name of this culture, the key
+					name = province_culture_summary
+					target = THIS.culture
+				}
+				add_to_variable_list = { # Store the total of pops of this culture counted, the value
+					name = province_culture_summary
+					target = current_culture_counted
+				}
+				set_variable = { # Reset the current culture counted to 0 ready to count the next one
+					name = current_culture_counted
+					value = 0
+					days = 2
+				}
+				set_variable = { # And then update the last iterated culture before resuming the iteration through pops
+					name = last_iterated_culture
+					value = THIS.culture
+				}
+			}
+		}
+		# If the culture is not in the list yet, add it to a list within the list
+		# If the culture is within the list, add one to the value in that list
+	}
+	every_in_list = {
+		list = province_culture_summary
+		debug_log = "List item"
+	}
+	debug_log = "Did cultures"
+}
