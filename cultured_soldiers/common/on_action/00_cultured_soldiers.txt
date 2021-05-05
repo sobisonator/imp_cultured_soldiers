@@ -3,48 +3,69 @@ on_legion_raised = {
 	# scope: legion
 	
 	effect = {
+		set_variable = {
+			name = legion_pops_of_country_culture
+			value = 1
+		}
+		set_variable = {
+			name = legion_pops_of_other_cultures
+			value = 1
+		}
 
-		any_legion_unit.location.state = { # Do I need to scope to a unit?
-			set_variable = {
-				name = local_pops_of_country_culture
-				value = 0
-			}
-			set_variable = {
-				name = local_pops_of_other_cultures
-				value = 0
-			}
-			every_state_province = {
-				every_pops_in_province = {
-					limit = { # Get pops of country culture group
-						pop_culture_group = owner:country_culture_group
-					}
-					PREV.PREV = { # Add to total of pops of country's culture group in the whole state
-						change_variable = {
-							name = local_pops_of_country_culture
-							add = 1
+		random_legion_unit = {
+			unit_location.governorship = { # Do I need to scope to a unit?
+				every_governorship_state = {
+					every_state_province = {
+
+						every_pops_in_province = {
+							limit = { # Get pops of country culture group
+								pop_culture_group = owner:country_culture_group
+							}
+							ROOT = { # Add to total of pops of country's culture group in the whole state
+								change_variable = {
+									name = legion_pops_of_country_culture
+									add = 1
+								}
+							}
 						}
+
+						every_pops_in_province = {
+							limit = { # Get pops of other culture groups
+								NOT = { pop_culture_group = owner:country_culture_group }
+							}
+							ROOT = { # Add to total of pops of other cultures group in the whole state
+								change_variable = {
+									name = legion_pops_of_other_cultures
+									add = 1
+								}
+							}
+						}
+
 					}
 				}
-				every_pops_in_province = {
-					limit = { # Get pops of other culture groups
-						NOT = { pop_culture_group = owner:country_culture_group }
-					}
-					PREV.PREV = { # Add to total of pops of other cultures group in the whole state
-						change_variable = {
-							name = local_pops_of_other_cultures
-							add = 1
-						}
-					}
-				}
 			}
-			set_variable = { # Get ratio of country culture group pops here
-				name = local_country_culture_ratio
-				value = local_pops_of_country_culture
+		}
+
+		set_variable = { # Get ratio of country culture group pops here
+			name = legion_country_culture_ratio
+			value = VAR:legion_pops_of_country_culture
+		}
+		change_variable = { # If >1, then it is majority country culture
+			name = legion_country_culture_ratio
+			divide = VAR:legion_pops_of_other_cultures
+		}
+
+		if = {
+			limit = {
+				VAR:legion_country_culture_ratio >= 1
 			}
-			change_variable = { # If >1, then it is majority country culture
-				name = local_country_culture_ratio
-				divide = local_pops_of_other_cultures
+			add_distinction = distinction_dishonor_impious
+		}
+		if = {
+			limit = {
+				VAR:legion_country_culture_ratio < 1
 			}
+			add_distinction = distinction_dishonor_mutineers
 		}
 
 	}
