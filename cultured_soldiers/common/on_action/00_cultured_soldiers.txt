@@ -17,8 +17,19 @@ on_legion_raised = {
 					every_governorship_state = {
 						every_state_province = {
 							every_pops_in_province = {
-								limit = { # Get pops of country culture group
-									culture_group = root.owner.culture_group
+								save_scope_as = this_pop
+								limit = {
+								  	root.owner = {
+								    	any_country_culture = {
+								        	this.culture = scope:this_pop.culture
+								        	OR = {
+									            has_country_culture_modifier = officer_right
+									            has_country_culture_modifier = honor_guard
+									            has_pop_type_right = nobles
+									            this.culture = root.owner.culture
+								        	}
+								        }
+								    }
 								}
 								scope:this_gov = { # Add to total of pops of country's culture group in the whole state
 									change_variable = {
@@ -28,8 +39,21 @@ on_legion_raised = {
 								}
 							}
 							every_pops_in_province = {
+								save_scope_as = this_pop
 								limit = { # Get pops of other culture groups
-									NOT = { culture_group = root.owner.culture_group }
+									NOt = {
+										root.owner = {
+									    	any_country_culture = {
+									        	this.culture = scope:this_pop.culture
+									        	OR = {
+										            has_country_culture_modifier = officer_right
+										            has_country_culture_modifier = honor_guard
+										            has_pop_type_right = nobles
+										            this.culture = root.owner.culture
+									        	}
+									        }
+									    }
+									}
 								}
 								scope:this_gov = { # Add to total of pops of other cultures group in the whole state
 									change_variable = {
