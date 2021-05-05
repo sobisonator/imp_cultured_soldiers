@@ -1,12 +1,51 @@
 on_legion_raised = {
 	# what: on the end of the day after a legion is created
 	# scope: legion
+	
 	effect = {
-		# From the location area, iterate through all the pops and get their cultures
-		# Include both accepted and non-accepted cultures
-		# Maybe add a law to recruit only from accepted cultures?
-		location.state = { # Does this work for legion scope? Or do I have to do any_subunit.location
-			create_province_cultures_dictionary = yes
+
+		any_legion_unit.location.state = { # Do I need to scope to a unit?
+			set_variable = {
+				name = local_pops_of_country_culture
+				value = 0
+			}
+			set_variable = {
+				name = local_pops_of_other_cultures
+				value = 0
+			}
+			every_state_province = {
+				every_pops_in_province = {
+					limit = { # Get pops of country culture group
+						pop_culture_group = owner:country_culture_group
+					}
+					PREV.PREV = { # Add to total of pops of country's culture group in the whole state
+						change_variable = {
+							name = local_pops_of_country_culture
+							add = 1
+						}
+					}
+				}
+				every_pops_in_province = {
+					limit = { # Get pops of other culture groups
+						NOT = { pop_culture_group = owner:country_culture_group }
+					}
+					PREV.PREV = { # Add to total of pops of other cultures group in the whole state
+						change_variable = {
+							name = local_pops_of_other_cultures
+							add = 1
+						}
+					}
+				}
+			}
+			set_variable = { # Get ratio of country culture group pops here
+				name = local_country_culture_ratio
+				value = local_pops_of_country_culture
+			}
+			change_variable = { # If >1, then it is majority country culture
+				name = local_country_culture_ratio
+				divide = local_pops_of_other_cultures
+			}
 		}
+
 	}
 }
