@@ -1,0 +1,46 @@
+on_legion_raised = {
+	# what: on the end of the day after a legion is created
+  	# scope: legion
+	effect = {
+		owner = {
+			every_country_state = {
+				governorship = {
+					if = {
+						limit =  {
+							NOT = { has_variable = this_gov_done }
+							has_legion_trigger = yes
+						}
+						get_legion_culture = yes
+						set_variable = { # Don't repeat this governorship when iterating through other states in it
+							name = this_gov_done
+							days = 5
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+monthly_country_pulse = {
+	effect = {
+		every_country_state = {
+			governorship = {
+				if = {
+					limit = {
+						# Don't repeat this governorship when iterating through other states in it
+						NOT = { has_variable = this_gov_done }
+						has_legion_trigger = yes
+					}
+					legion = {
+						get_legion_culture = yes
+					}
+					set_variable = { # Don't repeat this governorship when iterating through other states in it
+						name = this_gov_done
+						days = 5
+					}
+				}
+			}
+		}
+	}
+}
