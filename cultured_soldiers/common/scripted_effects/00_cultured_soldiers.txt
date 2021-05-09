@@ -60,30 +60,44 @@ get_legion_culture = { # Accepts scope: governorship
 		}
 	}
 
-	set_variable = { # Get percentage of country culture group pops here
-		name = governorship_accepted_culture_percentage
-		value = VAR:governorship_army_accepted_pops
+	if = { # If there are no non-accepted pops, skip this
+		limit = {
+			NOT = { VAR:governorship_army_non_accepted_pops = 0 }
+		}
+		set_variable = { # Get percentage of country culture group pops here
+			name = governorship_accepted_culture_percentage
+			value = VAR:governorship_army_accepted_pops
+		}
+		set_variable = {
+			name = governorship_accepted_pops_total
+			value = VAR:governorship_army_accepted_pops
+		}
+		change_variable = {
+			name = governorship_accepted_pops_total
+			add = VAR:governorship_army_non_accepted_pops
+		}
+		change_variable = {
+			name = governorship_accepted_culture_percentage
+			divide = VAR:governorship_army_non_accepted_pops
+		}
+		change_variable = {
+			name = governorship_accepted_culture_percentage
+			multiply = 100
+		}
+		clamp_variable = {
+			name = governorship_accepted_culture_percentage
+			max = 100
+			min = 0
+		}
 	}
-	set_variable = {
-		name = governorship_country_pops_total
-		value = VAR:governorship_army_accepted_pops
-	}
-	change_variable = {
-		name = governorship_country_pops_total
-		add = VAR:governorship_army_non_accepted_pops
-	}
-	change_variable = {
-		name = governorship_accepted_culture_percentage
-		divide = VAR:governorship_army_non_accepted_pops
-	}
-	change_variable = {
-		name = governorship_accepted_culture_percentage
-		multiply = 100
-	}
-	clamp_variable = {
-		name = governorship_accepted_culture_percentage
-		max = 100
-		min = 0
+	if = { # Assume 100% accepted pops if there are no non-accepted pops
+		limit = {
+			VAR:governorship_army_non_accepted_pops = 0
+		}
+		set_variable = {
+			name = governorship_accepted_culture_percentage
+			value = 100
+		}
 	}
 
 
