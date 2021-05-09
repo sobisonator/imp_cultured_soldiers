@@ -1,46 +1,51 @@
 0_percent_army_accepted_culture = {
-	land_morale = -0.1
-	loyalty_gain_chance_modifier = -0.1
+	land_morale = -0.3
+	loyalty_gain_chance_modifier = 0.1
+	cohort_reinforcement_speed = -0.05
 }
 10_percent_army_accepted_culture = {
-	land_morale = -0.08
-	loyalty_gain_chance_modifier = -0.08
+	land_morale = -0.24
+	loyalty_gain_chance_modifier = 0.08
+	cohort_reinforcement_speed = -0.04
 }
 20_percent_army_accepted_culture = {
-	land_morale = -0.06
-	loyalty_gain_chance_modifier = -0.06
+	land_morale = -0.18
+	loyalty_gain_chance_modifier = 0.06
+	cohort_reinforcement_speed = -0.03
 }
 30_percent_army_accepted_culture = {
-	land_morale = -0.04
-	loyalty_gain_chance_modifier = -0.04
+	land_morale = -0.12
+	loyalty_gain_chance_modifier = 0.04
+	cohort_reinforcement_speed = -0.02
 }
 40_percent_army_accepted_culture = {
-	land_morale = -0.02
-	loyalty_gain_chance_modifier = -0.02
+	land_morale = -0.06
+	loyalty_gain_chance_modifier = 0.02
+	cohort_reinforcement_speed = -0.01
 }
 50_percent_army_accepted_culture = {
 }
 60_percent_army_accepted_culture = {
-	land_morale = 0.02
-	loyalty_gain_chance_modifier = 0.02
+	land_morale = 0.06
+	loyalty_gain_chance_modifier = -0.02
 }
 70_percent_army_accepted_culture = {
-	land_morale = 0.04
-	loyalty_gain_chance_modifier = 0.04
+	land_morale = 0.12
+	loyalty_gain_chance_modifier = -0.04
 	local_monthly_state_loyalty = 0.005
 }
 80_percent_army_accepted_culture = {
-	land_morale = 0.06
-	loyalty_gain_chance_modifier = 0.06
+	land_morale = 0.18
+	loyalty_gain_chance_modifier = -0.06
 	local_monthly_state_loyalty = 0.01
 }
 90_percent_army_accepted_culture = {
-	land_morale = 0.08
-	loyalty_gain_chance_modifier = 0.08
+	land_morale = 0.24
+	loyalty_gain_chance_modifier = -0.08
 	local_monthly_state_loyalty = 0.015
 }
 100_percent_army_accepted_culture = {
-	land_morale = 0.1
-	loyalty_gain_chance_modifier = 0.1
+	land_morale = 0.3
+	loyalty_gain_chance_modifier = -0.1
 	local_monthly_state_loyalty = 0.02
 }
